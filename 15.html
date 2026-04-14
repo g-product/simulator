@@ -9,8 +9,9 @@
 body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f5f5f5;color:#222;max-width:720px;margin:0 auto;}
 h2{font-size:18px;font-weight:500;margin:0 0 1.25rem;padding-top:1rem;}
 label{display:block;font-size:14px;color:#444;margin-bottom:3px;}
-input,select{width:100%;font-size:15px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;outline:none;}
-input:focus,select:focus{border-color:#185FA5;}
+input,select{width:100%;font-size:15px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;outline:none;background:#f0f6ff;}
+input:focus,select:focus{border-color:#185FA5;background:#fff;}
+input:not(:placeholder-shown),select:not([value=""]){background:#fff;}
 .card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem;margin-bottom:12px;}
 .sec{font-size:13px;font-weight:600;color:#777;letter-spacing:.06em;text-transform:uppercase;margin:1rem 0 .5rem;}
 .sec:first-child{margin-top:0;}
@@ -30,7 +31,7 @@ input:focus,select:focus{border-color:#185FA5;}
 .cool-btn{flex:1;padding:6px 8px;font-size:14px;font-weight:400;border:none;background:#fff;color:#185FA5;cursor:pointer;}
 .cool-btn:not(:last-child){border-right:2px solid #185FA5;}
 .cool-btn.active{background:#185FA5;color:#fff;font-weight:700;font-size:15px;}
-.add-btn{font-size:14px;color:#185FA5;background:none;border:none;cursor:pointer;padding:4px 0;}
+.add-btn{font-size:14px;color:#185FA5;background:#fff;border:1.5px solid #185FA5;border-radius:6px;cursor:pointer;padding:6px 16px;margin-top:4px;}
 .result-sku-block{margin-bottom:1.25rem;}
 .result-sku-name{font-size:15px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .result-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -74,17 +75,26 @@ input:focus,select:focus{border-color:#185FA5;}
   <div class="sec">基本情報</div>
   <div class="field"><label>店舗名<span class="req">*</span></label><input type="text" id="shop-name" placeholder="例：直送農園" oninput="calc()"></div>
   </div>
-  <div class="sec">SKU情報</div>
+  <!-- 手動入力の使い方（常時表示） -->
+  <div style="margin-bottom:12px;padding:10px 12px;background:#fff;border:1px solid #ddd;border-radius:6px;font-size:12px;color:#333;line-height:1.9;">
+    <strong>📝 使い方</strong><br>
+    ① 店舗名を入力してください。<br>
+    ② SKU情報に、SKU名・販売価格・配送タイプ・サイズを入力してください。<br>
+    ③ SKUを追加したい場合は、「＋SKUを追加」ボタンを押してください。<br>
+    ④ 入力するとエリア別の手取額がリアルタイムで表示されます。<br>
+    ⑤ 内容を確認し「価格を確定してダウンロードする」ボタンを押してください。
+  </div>
+  <!-- CSVから一括読み込み -->
   <div style="margin-bottom:10px;">
     <label style="display:inline-block;cursor:pointer;background:#185FA5;border:1px solid #185FA5;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:500;color:#fff;">
       📂 CSVから一括読み込み
       <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="loadCsv(this)">
     </label>
-    <span style="font-size:11px;color:#999;margin-left:8px;">CSVから一括で読み込めます</span>
-    <div style="margin-top:8px;padding:10px 12px;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;color:#555;line-height:1.8;">
-      <strong style="color:#333;">📋 使い方</strong><br>
+    <button onclick="toggleCsvHelp()" style="margin-left:8px;font-size:12px;color:#185FA5;background:#fff;border:1px solid #185FA5;border-radius:5px;cursor:pointer;padding:4px 10px;">CSV一括読み込みの使い方を見る</button>
+    <div id="csv-help" style="display:none;margin-top:8px;padding:10px 12px;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;color:#555;line-height:1.8;">
+      <strong style="color:#333;">📋 CSVから一括読み込みの使い方</strong><br>
       ① 以下の列を含むCSVファイルを用意してください。<br>
-      　<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU名</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU表示名</span>　
+      　必須：<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU名</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU表示名</span>　
       <span style="background:#eee;padding:1px 4px;border-radius:3px;">販売価格</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">売価</span>　
       <span style="background:#eee;padding:1px 4px;border-radius:3px;">温度帯</span>　
       <span style="background:#eee;padding:1px 4px;border-radius:3px;">サイズ</span><br>
@@ -94,8 +104,8 @@ input:focus,select:focus{border-color:#185FA5;}
       ③ 読み込み後、内容を確認して必要に応じて修正してください。
     </div>
   </div>
+  <div class="sec" style="margin-top:.5rem;">SKU情報</div>
   <div id="sku-list"></div>
-  <div class="hint" style="margin-bottom:6px;">販売価格は10円単位で設定してください（例：3,950円・5,410円）</div>
   <button class="add-btn" onclick="addSku()">+ SKUを追加</button>
 </div>
 
@@ -136,7 +146,8 @@ function addSku() {
     '<div class="field" style="grid-column:1/-1;"><label>商品備考（任意）</label><input type="text" placeholder="例：化粧箱入" id="snote-' + id + '"></div>' +
     '<div class="field"><label>販売価格（円／税込）<span class="req">*</span></label>' +
     '<input type="number" placeholder="例：3950" id="sprice-' + id + '" min="10" step="10" oninput="onPriceInput(' + id + ')" required>' +
-    '<div class="price-err" id="perr-' + id + '"></div></div>' +
+    '<div class="price-err" id="perr-' + id + '"></div>' +
+    '<div class="hint">販売価格は10円単位で設定してください（例：3,950・5,410）</div></div>' +
     '<div class="field"><label>配送タイプ<span class="req">*</span></label>' +
     '<div class="cool-toggle">' +
     '<button class="cool-btn active" id="btn-normal-' + id + '" onclick="setDelivery(' + id + ', this.dataset.t)" data-t="normal">常温</button>' +
