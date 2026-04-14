@@ -408,12 +408,12 @@ function doCsv() {
   const skus    = getSkus();
   const now     = new Date().toLocaleString("ja-JP", {timeZone:"Asia/Tokyo"});
 
-  const headers = ["備考","SKUコード","SKU名","販売価格（税込）","便種","サイズ"];
+  const headers = ["商品備考","SKUコード","SKU名","販売価格（税込）","便種","サイズ"];
   const rows = [headers];
 
   skus.forEach((sku, skuIdx) => {
     rows.push([
-      skuIdx === 0 ? comment : "",
+      sku.note || "",
       sku.code || "-",
       sku.name,
       sku.price,
@@ -461,11 +461,12 @@ function loadCsv(input) {
     const lines = text.split(/\r?\n/).filter(l => l.trim());
     if (lines.length < 2) { alert("データが見つかりません"); return; }
     const headers = parseCsvLine(lines[0]);
-    const idxCode  = headers.findIndex(h => h.includes("SKUコード") || h.includes("コード") || h.includes("sku") || h.toLowerCase().includes("code") || h.includes("品番") || h.includes("商品番号"));
-    const idxName  = headers.findIndex(h => h.includes("SKU表示名") || h.includes("商品名") || h.includes("SKU名") || h.includes("name") || h.includes("品名") || h.includes("表示名"));
-    const idxPrice = headers.findIndex(h => h.includes("売価") || h.includes("販売価格") || h.includes("価格") || h.includes("price") || h.includes("金額") || h.includes("単価"));
+    const idxCode  = headers.findIndex(h => h === "SKUコード" || h === "SKU");
+    const idxName  = headers.findIndex(h => h === "SKU表示名" || h === "SKU名");
+    const idxPrice = headers.findIndex(h => h === "販売価格" || h === "売価");
     const idxTemp  = headers.findIndex(h => h.includes("温度帯") || h.includes("配送") || h.includes("便種") || h.includes("温度") || h.includes("冷蔵") || h.includes("クール"));
     const idxSize  = headers.findIndex(h => h.includes("サイズ") || h.includes("size") || h.includes("梱包") || h.includes("箱"));
+    const idxNote  = headers.findIndex(h => h === "商品備考");
     if (idxName < 0 || idxPrice < 0) {
       alert("SKU表示名・売価の列が見つかりません。\nCSVの列名を確認してください。");
       return;
@@ -481,12 +482,14 @@ function loadCsv(input) {
       const temp  = idxTemp  >= 0 ? cols[idxTemp]  : "常温";
       const size  = idxSize  >= 0 ? cols[idxSize].replace(/[^0-9]/g, "") : "60";
       const code  = idxCode  >= 0 ? cols[idxCode]  : "";
+      const note  = idxNote  >= 0 ? cols[idxNote]  : "";
       if (!name || !price) continue;
       addSku();
       const id = skuCount;
       document.getElementById("sname-" + id).value  = name;
       document.getElementById("sprice-" + id).value = price;
       if (document.getElementById("scode-" + id)) document.getElementById("scode-" + id).value = code;
+      if (document.getElementById("snote-" + id)) document.getElementById("snote-" + id).value = note;
       const isReito = temp.includes("冷凍"); const isReizo = temp.includes("冷蔵");
       if (isReito) setDelivery(id, "reito"); else if (isReizo) setDelivery(id, "reizo");
       const validSizes = ["60","80","100","120","140","160"];
