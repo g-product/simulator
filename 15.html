@@ -132,7 +132,17 @@ const AREAS = [{key:"avg",label:"平均（全国）"},{key:"south",label:"南東
 const MIN_TENOKOR = 151;
 let mode = "forward", skuCount = 0;
 
-
+function toggleCsvHelp() {
+  const el = document.getElementById("csv-help");
+  const btn = el.previousElementSibling;
+  if (el.style.display === "none") {
+    el.style.display = "block";
+    btn.textContent = "閉じる";
+  } else {
+    el.style.display = "none";
+    btn.textContent = "CSV一括読み込みの使い方を見る";
+  }
+}
 
 function addSku() {
   skuCount++; const id = skuCount;
