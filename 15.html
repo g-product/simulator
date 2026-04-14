@@ -21,7 +21,7 @@ input:focus,select:focus{border-color:#185FA5;}
 .toggle-btn{flex:1;padding:10px 12px;font-size:15px;font-weight:400;border:none;background:#fff;color:#185FA5;cursor:pointer;}
 .toggle-btn:not(:last-child){border-right:2px solid #185FA5;}
 .toggle-btn.active{background:#185FA5;color:#fff;font-weight:600;font-size:15px;}
-.sku-card{border:1px solid #ddd;border-radius:8px;padding:.75rem 1rem;margin-bottom:10px;}
+.sku-card{border:1px solid #bbb;border-radius:8px;padding:.75rem 1rem;margin-bottom:10px;background:#fff;}
 .sku-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;}
 .sku-label{font-size:14px;font-weight:500;color:#444;}
 .del-btn{font-size:18px;color:#999;background:none;border:none;cursor:pointer;padding:0 2px;}
@@ -408,17 +408,17 @@ function doCsv() {
   const skus    = getSkus();
   const now     = new Date().toLocaleString("ja-JP", {timeZone:"Asia/Tokyo"});
 
-  const headers = ["商品備考","SKUコード","SKU名","販売価格（税込）","便種","サイズ"];
+  const headers = ["SKU名","SKUコード","販売価格（税込）","便種","サイズ","商品備考"];
   const rows = [headers];
 
   skus.forEach((sku, skuIdx) => {
     rows.push([
-      sku.note || "",
-      sku.code || "-",
       sku.name,
+      sku.code || "-",
       sku.price,
       sku.deliveryLabel,
       sku.size,
+      sku.note || "",
     ]);
   });
 
