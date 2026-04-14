@@ -76,11 +76,23 @@ input:focus,select:focus{border-color:#185FA5;}
   </div>
   <div class="sec">SKU情報</div>
   <div style="margin-bottom:10px;">
-    <label style="display:inline-block;cursor:pointer;background:#f0f4f8;border:1px solid #ccc;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:500;color:#185FA5;">
+    <label style="display:inline-block;cursor:pointer;background:#185FA5;border:1px solid #185FA5;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:500;color:#fff;">
       📂 CSVから一括読み込み
       <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="loadCsv(this)">
     </label>
-    <span style="font-size:11px;color:#999;margin-left:8px;">SKUコード・SKU表示名・売価・温度帯・サイズの列を含むCSVに対応</span>
+    <span style="font-size:11px;color:#999;margin-left:8px;">CSVから一括で読み込めます</span>
+    <div style="margin-top:8px;padding:10px 12px;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;color:#555;line-height:1.8;">
+      <strong style="color:#333;">📋 使い方</strong><br>
+      ① 以下の列を含むCSVファイルを用意してください。<br>
+      　<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU名</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU表示名</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">販売価格</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">売価</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">温度帯</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">サイズ</span><br>
+      　任意：<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKUコード</span>または<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">商品備考</span><br>
+      ② ボタンをクリックしてCSVファイルを選択すると自動で読み込まれます。<br>
+      ③ 読み込み後、内容を確認して必要に応じて修正してください。
+    </div>
   </div>
   <div id="sku-list"></div>
   <div class="hint" style="margin-bottom:6px;">販売価格は10円単位で設定してください（例：3,950円・5,410円）</div>
@@ -96,9 +108,9 @@ input:focus,select:focus{border-color:#185FA5;}
   <div id="confirm-sec" class="confirm-sec">
     <div class="sec">ダウンロード</div>
     <div class="field"><label>備考・コメント</label><input type="text" id="comment" placeholder="任意"></div>
-    <button class="pdf-btn" onclick="doPdf()">📄 PDFをダウンロード（事務局への送付用）</button>
-    <button class="csv-btn" onclick="doCsv()">📊 CSVをダウンロード（事務局の内部作業用）</button>
-    <p class="note">PDFを事務局にメール（support@ng-life.jp）またはLINEでお送りください。</p>
+    <button class="pdf-btn" onclick="doPdf()">📄 PDFをダウンロード</button>
+    <button class="csv-btn" onclick="doCsv()">📊 CSVをダウンロード（事務局の申請用）</button>
+    <p class="note">価格の変更をご希望の場合、CSVをダウンロードして事務局にメール（support@ng-life.jp）またはLINEでお送りください。</p>
   </div>
   <button class="outline-btn" id="confirm-btn" onclick="showConfirm()">価格を確定してダウンロードする</button>
 </div>
