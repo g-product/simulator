@@ -270,7 +270,7 @@ function showConfirm() {
 
 function doPdf() {
   const shop    = document.getElementById("shop-name").value || "店舗";
-  const email   = document.getElementById("email").value || "";
+  const emailEl = document.getElementById("email"); const email = emailEl ? emailEl.value || "" : "";
   const comment = document.getElementById("comment").value || "";
   const skus    = getSkus();
   const now     = new Date().toLocaleString("ja-JP", {timeZone:"Asia/Tokyo"});
@@ -403,7 +403,7 @@ ${skuBlocks}
 
 function doCsv() {
   const shop    = document.getElementById("shop-name").value || "店舗";
-  const email   = document.getElementById("email").value || "";
+  const emailEl = document.getElementById("email"); const email = emailEl ? emailEl.value || "" : "";
   const comment = document.getElementById("comment").value || "";
   const skus    = getSkus();
   const now     = new Date().toLocaleString("ja-JP", {timeZone:"Asia/Tokyo"});
