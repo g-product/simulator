@@ -11,7 +11,8 @@ h2{font-size:18px;font-weight:500;margin:0 0 1.25rem;padding-top:1rem;}
 label{display:block;font-size:14px;color:#444;margin-bottom:3px;}
 input,select{width:100%;font-size:15px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;outline:none;background:#f0f6ff;}
 input:focus,select:focus{border-color:#185FA5;background:#fff;}
-input:not(:placeholder-shown),select:not([value=""]){background:#fff;}
+input:not(:placeholder-shown){background:#fff;}
+select{background:#f0f6ff;}
 .card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem;margin-bottom:12px;}
 .sec{font-size:13px;font-weight:600;color:#777;letter-spacing:.06em;text-transform:uppercase;margin:1rem 0 .5rem;}
 .sec:first-child{margin-top:0;}
@@ -90,7 +91,7 @@ input:not(:placeholder-shown),select:not([value=""]){background:#fff;}
       📂 CSVから一括読み込み
       <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="loadCsv(this)">
     </label>
-    <button onclick="toggleCsvHelp()" style="margin-left:8px;font-size:12px;color:#185FA5;background:#fff;border:1px solid #185FA5;border-radius:5px;cursor:pointer;padding:4px 10px;">CSV一括読み込みの使い方を見る</button>
+    <span onclick="toggleCsvHelp()" style="margin-left:8px;font-size:12px;color:#185FA5;cursor:pointer;text-decoration:underline;">▶ CSV一括読み込みの使い方を見る</span>
     <div id="csv-help" style="display:none;margin-top:8px;padding:10px 12px;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;color:#555;line-height:1.8;">
       <strong style="color:#333;">📋 CSVから一括読み込みの使い方</strong><br>
       ① 以下の列を含むCSVファイルを用意してください。<br>
@@ -137,10 +138,10 @@ function toggleCsvHelp() {
   const btn = el.previousElementSibling;
   if (el.style.display === "none") {
     el.style.display = "block";
-    btn.textContent = "閉じる";
+    btn.textContent = "▼ CSV一括読み込みの使い方を閉じる";
   } else {
     el.style.display = "none";
-    btn.textContent = "CSV一括読み込みの使い方を見る";
+    btn.textContent = "▶ CSV一括読み込みの使い方を見る";
   }
 }
 
@@ -496,9 +497,9 @@ function loadCsv(input) {
     const headers = parseCsvLine(lines[0]);
     const idxCode  = headers.findIndex(h => h === "SKUコード" || h === "SKU");
     const idxName  = headers.findIndex(h => h === "SKU表示名" || h === "SKU名");
-    const idxPrice = headers.findIndex(h => h === "販売価格" || h === "売価");
-    const idxTemp  = headers.findIndex(h => h.includes("温度帯") || h.includes("配送") || h.includes("便種") || h.includes("温度") || h.includes("冷蔵") || h.includes("クール"));
-    const idxSize  = headers.findIndex(h => h.includes("サイズ") || h.includes("size") || h.includes("梱包") || h.includes("箱"));
+    const idxPrice = headers.findIndex(h => h === "販売価格" || h === "売価" || h === "販売価格（税込）");
+    const idxTemp  = headers.findIndex(h => h === "便種" || h.includes("温度帯") || h.includes("配送") || h.includes("温度") || h.includes("冷蔵") || h.includes("クール"));
+    const idxSize  = headers.findIndex(h => h === "サイズ" || h.includes("梱包") || h.includes("箱") || h.toLowerCase() === "size");
     const idxNote  = headers.findIndex(h => h === "商品備考");
     if (idxName < 0 || idxPrice < 0) {
       alert("SKU表示名・売価の列が見つかりません。\nCSVの列名を確認してください。");
