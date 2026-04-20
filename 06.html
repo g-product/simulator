@@ -10,10 +10,10 @@
 body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f5f5f5;color:#222;max-width:720px;margin:0 auto;}
 h2{font-size:18px;font-weight:500;margin:0 0 1.25rem;padding-top:1rem;}
 label{display:block;font-size:14px;color:#444;margin-bottom:3px;}
-input,select{width:100%;font-size:15px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;outline:none;background:#f0f7f0;}
+input,select{width:100%;font-size:15px;padding:7px 10px;border:1px solid #ccc;border-radius:6px;outline:none;background:#f0f6ff;}
 input:focus,select:focus{border-color:#2d7a2d;background:#fff;}
 input:not(:placeholder-shown){background:#fff;}
-select{background:#f0f7f0;}
+select{background:#f0f6ff;}
 .card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem;margin-bottom:12px;}
 .sec{font-size:13px;font-weight:600;color:#777;letter-spacing:.06em;text-transform:uppercase;margin:1rem 0 .5rem;}
 .sec:first-child{margin-top:0;}
@@ -44,7 +44,7 @@ select{background:#f0f7f0;}
 .result-table tr.avg-row td{background:#EEF4FB;font-weight:500;}
 .pos{color:#1a7a1a;font-weight:500;}
 .neg{color:#cc0000;font-weight:500;}
-.tag-c{display:inline-block;font-size:12px;padding:1px 5px;border-radius:3px;background:#dcf0dc;color:#1a6b1a;white-space:nowrap;}
+.tag-c{display:inline-block;font-size:12px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;white-space:nowrap;}
 .tag-m{display:inline-block;font-size:12px;padding:1px 5px;border-radius:3px;background:#fef3c7;color:#92400e;white-space:nowrap;}
 .alert-box{border-radius:8px;padding:.75rem 1rem;margin-top:10px;font-size:14px;line-height:1.7;display:none;}
 .alert-box.warn{background:#FFF3CD;border:1px solid #FBBF24;color:#7C5700;}
@@ -75,7 +75,11 @@ select{background:#f0f7f0;}
 
 <div class="card">
   <div class="sec">基本情報</div>
-  <div class="field"><label>店舗名<span class="req">*</span></label><input type="text" id="shop-name" placeholder="例：直送農園" oninput="calc()"></div>
+  <div class="g2">
+    <div class="field"><label>ページ番号</label><input type="text" id="page-code" placeholder="例：0000-000"></div>
+    <div class="field"><label>申請日</label><input type="date" id="apply-date"></div>
+  </div>
+  <div class="field"><label>店舗名</label><input type="text" id="shop-name" placeholder="例：直送農園" oninput="calc()"></div>
   </div>
   <!-- 手動入力の使い方（常時表示） -->
   <div style="margin-bottom:12px;padding:10px 12px;background:#fff;border:1px solid #ddd;border-radius:6px;font-size:12px;color:#333;line-height:1.9;">
@@ -88,11 +92,11 @@ select{background:#f0f7f0;}
   </div>
   <!-- CSVから一括読み込み -->
   <div style="margin-bottom:10px;">
-    <div id="drop-zone" style="border:2px dashed #2d7a2d;border-radius:8px;padding:14px;text-align:center;background:#f0f7f0;cursor:pointer;transition:background .2s;"
+    <div id="drop-zone" style="border:2px dashed #2d7a2d;border-radius:8px;padding:14px;text-align:center;background:#f0f6ff;cursor:pointer;transition:background .2s;"
       onclick="document.getElementById('csv-upload').click()"
       ondragover="event.preventDefault();this.style.background='#daeaff';"
-      ondragleave="this.style.background='#f0f7f0';"
-      ondrop="event.preventDefault();this.style.background='#f0f7f0';handleDrop(event);">
+      ondragleave="this.style.background='#f0f6ff';"
+      ondrop="event.preventDefault();this.style.background='#f0f6ff';handleDrop(event);">
       <span style="font-size:13px;font-weight:500;color:#2d7a2d;">📂 CSVから一括読み込み</span>
       <span style="font-size:12px;color:#666;margin-left:6px;">クリックまたはファイルをここにドラッグ＆ドロップ</span>
       <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="loadCsv(this)">
@@ -102,10 +106,10 @@ select{background:#f0f7f0;}
       <strong style="color:#333;">📋 CSVから一括読み込みの使い方</strong><br>
       ① 以下の列を含むCSVファイルを用意してください。<br>
       　必須：<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKU名</span>　
-      <span style="background:#eee;padding:1px 4px;border-radius:3px;">売価</span>　
-      <span style="background:#eee;padding:1px 4px;border-radius:3px;">温度帯</span>　
-      <span style="background:#eee;padding:1px 4px;border-radius:3px;">サイズ</span><br>
-      　任意：<span style="background:#eee;padding:1px 4px;border-radius:3px;">SKUコード</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">売価</span><br>
+      　任意：<span style="background:#eee;padding:1px 4px;border-radius:3px;">温度帯</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">サイズ</span>　
+      <span style="background:#eee;padding:1px 4px;border-radius:3px;">SKUコード</span>　
       <span style="background:#eee;padding:1px 4px;border-radius:3px;">商品備考</span><br>
       ② ボタンをクリックしてCSVファイルを選択すると自動で読み込まれます。<br>
       ③ 読み込み後、内容を確認して必要に応じて修正してください。<br><br>
@@ -127,16 +131,16 @@ select{background:#f0f7f0;}
     <div class="sec">ダウンロード</div>
     <div class="field"><label>備考・コメント</label><input type="text" id="comment" placeholder="任意"></div>
     <button class="pdf-btn" onclick="doPdf()">📄 PDFをダウンロード</button>
-    <button class="csv-btn" onclick="doCsv()">📊 CSVをダウンロード（事務局への申請用）</button>
-    <p class="note">価格の変更をご希望の場合、CSVをダウンロードして事務局にメールまたはLINEでお送りください。</p>
+    <button class="csv-btn" onclick="doCsv()">📊 CSVをダウンロード（事務局の申請用）</button>
+    <p class="note">価格の変更をご希望の場合、CSVをダウンロードして事務局にメール（support@yamagata.chokuso-keikaku.jp）またはLINEでお送りください。</p>
   </div>
   <button class="outline-btn" id="confirm-btn" onclick="showConfirm()">価格を確定してダウンロードする</button>
 </div>
 
 <script>
-const SHIP_NORMAL = {"60":{avg:889,a:803,b:924,c:979,d:1067,e:1144,f:1243},"80":{avg:971,a:869,b:1023,c:1089,d:1177,e:1265,f:1364},"100":{avg:1065,a:946,b:1133,c:1210,d:1298,e:1397,f:1540},"120":{avg:1170,a:1056,b:1210,c:1298,d:1386,e:1540,f:1639},"140":{avg:1306,a:1199,b:1298,c:1397,d:1551,e:1650,f:1793},"160":{avg:1440,a:1342,b:1496,c:1595,d:1595,e:1738,f:1848}};
-const SHIP_COOL   = {"60":{avg:1164,a:1078,b:1199,c:1254,d:1342,e:1419,f:1518},"80":{avg:1301,a:1199,b:1353,c:1419,d:1507,e:1595,f:1694},"100":{avg:1505,a:1386,b:1573,c:1650,d:1738,e:1837,f:1980},"120":{avg:1885,a:1771,b:1925,c:2013,d:2101,e:2255,f:2354}};
-const AREAS = [{key:"avg",label:"平均（全国）"},{key:"a",label:"北東北〜信越"},{key:"b",label:"北陸・中部"},{key:"c",label:"関西"},{key:"d",label:"北海道"},{key:"e",label:"中国・四国"},{key:"f",label:"九州"}];
+const SHIP_NORMAL = {"60":{avg:885,south:803,north:968,west:1023,far:1188},"80":{avg:958,south:869,north:1045,west:1111,far:1287},"100":{avg:1041,south:946,north:1133,west:1210,far:1397},"120":{avg:1149,south:1056,north:1210,west:1298,far:1540},"140":{avg:1277,south:1199,north:1298,west:1397,far:1650},"160":{avg:1370,south:1287,north:1441,west:1540,far:1683}};
+const SHIP_COOL   = {"60":{avg:1160,south:1078,north:1243,west:1298,far:1463},"80":{avg:1288,south:1199,north:1375,west:1441,far:1617},"100":{avg:1481,south:1386,north:1573,west:1650,far:1837},"120":{avg:1864,south:1771,north:1925,west:2013,far:2255}};
+const AREAS = [{key:"avg",label:"平均（全国）"},{key:"south",label:"南東北〜中部"},{key:"north",label:"北東北・関西"},{key:"west",label:"中国・四国"},{key:"far",label:"北海道・九州"}];
 const MIN_TENOKOR = 151;
 let mode = "forward", skuCount = 0;
 
@@ -262,7 +266,7 @@ function fmt(n) { return Math.round(n).toLocaleString("ja-JP") + "円"; }
 function cls(n) { return n >= 0 ? "pos" : "neg"; }
 function hasAnyPriceError() { return !!document.querySelector(".price-err[style*='block']"); }
 function hasEmptyRequired() {
-  if (!document.getElementById("shop-name").value.trim()) return true;
+  // 店舗名は任意
   return getAllSkuCards().some(s => !s.name || !s.price);
 }
 
@@ -305,7 +309,7 @@ function calc() {
 
 function updateAlerts(skus, anyWarn) {
   const emptyItems = [];
-  if (!document.getElementById("shop-name").value.trim()) emptyItems.push("店舗名");
+  if (!document.getElementById("shop-name").value.trim()) // 店舗名は任意のためチェックしない
   getAllSkuCards().forEach(s => {
     if (!s.name) emptyItems.push("SKU " + s.id + "：SKU名");
     if (!s.price) emptyItems.push("SKU " + s.id + "：販売価格");
@@ -337,8 +341,8 @@ function doPdf() {
   const comment = document.getElementById("comment").value || "";
   const skus    = getSkus();
   const now     = new Date().toLocaleString("ja-JP", {timeZone:"Asia/Tokyo"});
-  const AK      = ["avg","a","b","c","d","e","f"];
-  const AL      = ["平均（全国）","北東北〜信越","北陸・中部","関西","北海道","中国・四国","九州"];
+  const AK      = ["avg","south","north","west","far"];
+  const AL      = ["平均（全国）","南東北〜中部","北東北・関西","中国・四国","北海道・九州"];
 
   let skuBlocks = "";
   skus.forEach((sku, idx) => {
@@ -459,8 +463,14 @@ ${skuBlocks}
 </body>
 </html>`;
 
+  const pageCodeP = document.getElementById("page-code").value || "";
+  const applyDateP = document.getElementById("apply-date").value ? document.getElementById("apply-date").value.replace(/-/g,"") : new Date().toISOString().slice(0,10).replace(/-/g,"");
+  const shopNameP = document.getElementById("shop-name").value || "";
+  const firstSkuNameP = skus.length > 0 ? skus[0].name : "";
+  const partsP = [pageCodeP, shopNameP, firstSkuNameP, applyDateP].filter(v => v);
+  const pdfFileName = partsP.join("_");
   const w = window.open("", "_blank");
-  w.document.write(html);
+  w.document.write(html.replace('山形直送計画 振込価格表_${shop}', pdfFileName));
   w.document.close();
 }
 
@@ -489,7 +499,12 @@ function doCsv() {
   const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "振込価格_" + shop + "_" + new Date().toISOString().slice(0,10) + ".csv";
+  const pageCode = document.getElementById("page-code").value || "";
+  const applyDate = document.getElementById("apply-date").value ? document.getElementById("apply-date").value.replace(/-/g,"") : new Date().toISOString().slice(0,10).replace(/-/g,"");
+  const shopName = document.getElementById("shop-name").value || "";
+  const firstSkuName = skus.length > 0 ? skus[0].name : "";
+  const parts = [pageCode, shopName, firstSkuName, applyDate].filter(v => v);
+  a.download = parts.join("_") + ".csv";
   a.click();
 }
 
