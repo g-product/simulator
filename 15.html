@@ -459,7 +459,29 @@ ${skuBlocks}
 <div class="footer">
   ※ 表示価格はすべて税込です。<br>  ※ 本体サイト経由（直送計画）手数料20% / 楽天等モール経由 手数料25%
 </div>
-<script>window.onload = function(){ window.print(); }<\/script>
+<script>window.onload = function(){
+  // タイトル（ファイル名）を動的に設定
+  if (window.opener) {
+    try {
+      var pc = window.opener.document.getElementById("page-code");
+      var ad = window.opener.document.getElementById("apply-date");
+      var sn = window.opener.document.getElementById("shop-name");
+      var skuCards = window.opener.document.querySelectorAll("#sku-list .sku-card");
+      var firstSkuName = "";
+      if (skuCards.length > 0) {
+        var firstId = skuCards[0].id.replace("sku-", "");
+        var nameEl = window.opener.document.getElementById("sname-" + firstId);
+        if (nameEl) firstSkuName = nameEl.value;
+      }
+      var pageCode = pc ? pc.value : "";
+      var applyDate = ad && ad.value ? ad.value.replace(/-/g,"") : "";
+      var shopName = sn ? sn.value : "";
+      var parts = [pageCode, shopName, firstSkuName, applyDate].filter(function(v){ return v; });
+      if (parts.length > 0) document.title = parts.join("_");
+    } catch(e) {}
+  }
+  window.print();
+}<\/script>
 </body>
 </html>`;
 
